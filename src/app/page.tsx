@@ -1,11 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
-import Image from "next/image";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { DocsSidebarNav } from "./ui/SidebarNav";
-import { ScrollArea } from "./ui/ScrollArea";
-import chestIcon from "../../public/chestIcon.svg";
 
 export default async function Home() {
   noStore();
