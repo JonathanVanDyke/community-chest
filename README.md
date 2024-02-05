@@ -1,3 +1,7 @@
+# Auth
+
+If you're running this locally and don't have a discord login, please follow the [t3 setup docs](https://create.t3.gg/en/usage/next-auth#:~:text=%7D)
+
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
