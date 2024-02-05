@@ -1,9 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
-
+import Image from "next/image";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import { DocsSidebarNav } from "./ui/MainNav";
+import { ScrollArea } from "./ui/ScrollArea";
+import chestIcon from "../../public/chestIcon.svg";
 
 export default async function Home() {
   noStore();
@@ -11,54 +13,62 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+    <main className="h-100 flex flex-row items-center justify-between bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <div className="fixed	 top-0 z-30 flex h-full w-72 border-r-2 border-solid border-red-500 bg-red-800">
+        <ScrollArea className="h-full w-full py-6 pr-6 lg:py-8">
+          <div className="align-center flex items-center  justify-center">
+            <Image
+              priority
+              width={80}
+              color={"yellow"}
+              src={chestIcon}
+              alt="chest"
+            />
+            <div className="align-center m-3 flex flex-col items-center justify-center font-black text-red-200">
+              <div>COMMUNITY</div>
+              <div>CHEST</div>
             </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl text-white">
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
           </div>
-        </div>
+          <br />
+          <DocsSidebarNav
+            items={[
+              {
+                title: "Getting Started",
+                items: [
+                  {
+                    title: "T3-example-page",
+                    href: "/t3-example-page",
+                    items: [],
+                  },
+                ],
+              },
+              {
+                title: "Components",
+                items: [
+                  {
+                    title: "Command",
+                    href: "/docs/components/command",
+                    items: [],
+                  },
+                  {
+                    title: "Tooltip",
+                    href: "/docs/components/tooltip",
+                    items: [],
+                  },
+                ],
+              },
+            ]}
+          />
+        </ScrollArea>
+      </div>
+      <div className="w-72" />
 
-        <CrudShowcase />
+      <div className="flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+        <div className="h-96">Hi</div>
+        <div className="h-96">Hi</div>
+
+        <div className="h-96">Hi</div>
+        <div className="h-96">Hi</div>
       </div>
     </main>
   );
