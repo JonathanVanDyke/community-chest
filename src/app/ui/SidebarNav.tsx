@@ -7,7 +7,11 @@ import { cn } from "../lib/utils";
 import { Separator } from "./Separator";
 
 export interface SidebarNavProps {
-  items: any[];
+  items: {
+    title?: string;
+    href?: string;
+    items?: { title?: string; href: string }[];
+  }[];
 }
 
 export function SidebarNav({ items }: SidebarNavProps) {
@@ -31,7 +35,20 @@ export function SidebarNav({ items }: SidebarNavProps) {
 }
 
 interface SidebarNavItemsProps {
-  items: any[];
+  items: {
+    title?: string;
+    href: string;
+    disabled?: boolean;
+    external?: boolean;
+    label?: string;
+    items?: {
+      title?: string;
+      href: string;
+      disabled?: boolean;
+      external?: boolean;
+      label?: string;
+    }[];
+  }[];
   pathname: string | null;
 }
 
