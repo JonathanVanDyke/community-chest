@@ -27,8 +27,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <main className="h-100 from-aqua-950 to-aqua-10 flex flex-row items-center justify-between bg-gradient-to-b">
             <Sidebar />
-
-            <div className="w-96" />
+            <div className="w-[360px]" />
             <div className="from-aqua-950 to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b text-white">
               {children}
             </div>
