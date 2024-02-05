@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ScrollArea } from "./ui/ScrollArea";
-import { DocsSidebarNav } from "./ui/MainNav";
+import { SidebarNav } from "./ui/SidebarNav";
 
 import chestIcon from "../../public/chestIcon.svg";
 
@@ -52,7 +52,7 @@ export default function RootLayout({
                 </a>
                 <br />
                 <Separator className="m-4 bg-black " />
-                <DocsSidebarNav
+                <SidebarNav
                   items={[
                     {
                       title: "Getting Started",
