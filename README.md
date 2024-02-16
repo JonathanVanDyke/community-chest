@@ -6,6 +6,16 @@ If you're running this locally and don't have a discord login, please follow the
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
+## Setup
+
+1. Clone the repo
+2. (Optional) Open the repo in VSCode and, when prompted, select "re-open in devcontainer"
+3. Copy `.env.example` to `.env` and fill in your environment variables following the instructions [here](https://create.t3.gg/en/usage/first-steps)
+4. Execute `./start-database.sh`
+4. Execute `npm install`
+5. Execute `npx prisma db push`
+6. Execute `npm run dev`
+
 ## What's next? How do I make an app with this?
 
 We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
