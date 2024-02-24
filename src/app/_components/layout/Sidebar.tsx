@@ -3,7 +3,7 @@ import { SidebarNav } from "../../ui/SidebarNav";
 
 import Image from "next/image";
 
-import chestIcon from "../../../../public/chestIcon.svg";
+import chestIcon from "public/chestIcon.svg";
 
 const sideBarItems = [
   {
@@ -28,8 +28,8 @@ const sideBarItems = [
 ];
 
 const Sidebar = () => (
-  <div className="bg-aqua-100 border-aqua-90 text-aqua-950 fixed top-0 flex h-full w-72">
-    <ScrollArea className="h-full w-full py-6  lg:py-8">
+  <div className="border-aqua-90 flex w-96 min-w-24 bg-aqua-100 text-aqua-950">
+    <ScrollArea className="h-full w-full py-6 lg:py-8">
       <Logo />
       <br />
       <SidebarNav items={sideBarItems} />
@@ -38,9 +38,9 @@ const Sidebar = () => (
 );
 
 const Logo = () => (
-  <a href={"/"} className="align-center flex items-center justify-center pr-6">
+  <a href={"/"} className="align-center flex items-center justify-center p-6">
     <Image priority width={80} color={"aqua"} src={chestIcon} alt="chest" />
-    <div className="align-center text-aqua-950 m-3 flex flex-col items-center justify-center font-black">
+    <div className="align-center m-3 flex flex-col items-center justify-center font-black text-aqua-950">
       <div>COMMUNITY</div>
       <div>CHEST</div>
     </div>
