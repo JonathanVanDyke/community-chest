@@ -23,12 +23,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Astoria Community Chest</title>
+        <meta name="description" content="Astoria Community Chest" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
-          <main className="h-100 from-aqua-950 to-aqua-10 flex flex-row items-center justify-between bg-gradient-to-b">
+          <main className="to-aqua-10 flex h-full flex-row bg-gradient-to-b from-aqua-950">
             <Sidebar />
-            <div className="w-[360px]" />
-            <div className="from-aqua-950 to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b text-white">
+            <div className="to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b from-aqua-950 p-5 text-white">
               {children}
             </div>
           </main>
