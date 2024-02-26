@@ -1,15 +1,7 @@
 import { ScrollArea } from "~/app/ui/ScrollArea";
 import { SidebarNav } from "../../ui/SidebarNav";
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 
 import Image from "next/image";
 import svgColorFilter from "~/styles/svgColorFilters";
@@ -39,7 +31,7 @@ const sideBarItems = [
 const Sidebar = () => {
   return (
     <>
-      <div className="fixed left-2 top-2 sm:hidden">
+      <div className="fixed left-2 top-2 z-50 h-24 sm:hidden">
         <Sheet>
           <SheetTrigger>
             <Image
@@ -50,7 +42,7 @@ const Sidebar = () => {
               style={{
                 filter: svgColorFilter.white,
               }}
-              className="xs:h-10 xs:w-10 mt-3 h-8 w-8"
+              className="mt-3 h-8 w-8 xs:h-10 xs:w-10"
             />
           </SheetTrigger>
           <SheetContent side="left" className="w-full border-none p-0">

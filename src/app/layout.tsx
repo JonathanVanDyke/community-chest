@@ -30,7 +30,13 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
-          <main className="to-aqua-10 flex h-full flex-row bg-gradient-to-b from-aqua-950">
+          <main className="to-aqua-10 flex h-full flex-col bg-gradient-to-b from-aqua-950 sm:flex-row">
+            <div className="fixed z-50 h-24 w-full border-b-2 border-slate-900 bg-gradient-to-b from-aqua-800 to-aqua-950 pt-5 sm:hidden ">
+              <h1 className="mb-2 text-center text-3xl text-white">
+                Community Chest
+              </h1>
+            </div>
+            <div className="h-24 sm:hidden " />
             <Sidebar />
             <div className="to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b from-aqua-950 p-5 text-white">
               {children}
