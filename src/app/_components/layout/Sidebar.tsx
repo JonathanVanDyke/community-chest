@@ -1,9 +1,18 @@
 import { ScrollArea } from "~/app/ui/ScrollArea";
 import { SidebarNav } from "../../ui/SidebarNav";
 
-import Image from "next/image";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
 
-import chestIcon from "public/chestIcon.svg";
+import Image from "next/image";
+import svgColorFilter from "~/styles/svgColorFilters";
 
 const sideBarItems = [
   {
@@ -27,8 +36,37 @@ const sideBarItems = [
   },
 ];
 
-const Sidebar = () => (
-  <div className="border-aqua-90 flex w-96 min-w-24 bg-aqua-100 text-aqua-950">
+const Sidebar = () => {
+  return (
+    <>
+      <div className="fixed left-2 top-2 sm:hidden">
+        <Sheet>
+          <SheetTrigger>
+            <Image
+              src="/icons/menu.svg"
+              alt="menu"
+              width="40"
+              height="40"
+              style={{
+                filter: svgColorFilter.white,
+              }}
+              className="xs:h-10 xs:w-10 mt-3 h-8 w-8"
+            />
+          </SheetTrigger>
+          <SheetContent side="left" className="w-full border-none p-0">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div className="hidden min-w-60 sm:flex">
+        <SidebarContent />
+      </div>
+    </>
+  );
+};
+
+const SidebarContent = () => (
+  <div className="border-aqua-90 flex h-full w-full bg-aqua-100 text-aqua-950">
     <ScrollArea className="h-full w-full py-6 lg:py-8">
       <Logo />
       <br />
@@ -39,7 +77,15 @@ const Sidebar = () => (
 
 const Logo = () => (
   <a href={"/"} className="align-center flex items-center justify-center p-6">
-    <Image priority width={80} color={"aqua"} src={chestIcon} alt="chest" />
+    <Image
+      src="/chestIcon.svg"
+      alt="chest"
+      width="80"
+      height="80"
+      style={{
+        filter: svgColorFilter.aqua[950],
+      }}
+    />
     <div className="align-center m-3 flex flex-col items-center justify-center font-black text-aqua-950">
       <div>COMMUNITY</div>
       <div>CHEST</div>
