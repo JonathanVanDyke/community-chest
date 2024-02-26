@@ -25,7 +25,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
           <h4 className="mb-1 px-2 py-1 text-sm font-semibold">{item.title}</h4>
           {item?.items?.length && (
             <>
-              <Separator className="bg-aqua-500 " />
+              <Separator className="bg-aqua-500" />
               <SidebarNavItems items={item.items} pathname={pathname} />
             </>
           )}
