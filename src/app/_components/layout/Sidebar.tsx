@@ -50,7 +50,7 @@ const Sidebar = () => {
           </SheetContent>
         </Sheet>
       </div>
-      <div className="hidden w-3/12 min-w-60 sm:flex">
+      <div className="hidden min-w-60 sm:flex">
         <SidebarContent />
       </div>
     </>
