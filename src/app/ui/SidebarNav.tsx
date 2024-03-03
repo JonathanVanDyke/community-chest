@@ -13,9 +13,10 @@ export interface SidebarNavProps {
     href?: string;
     items?: { title?: string; href: string }[];
   }[];
+  onNavItemClick?: () => void;
 }
 
-export function SidebarNav({ items }: SidebarNavProps) {
+export function SidebarNav({ items, onNavItemClick }: SidebarNavProps) {
   const pathname = usePathname();
 
   return items.length ? (
@@ -26,7 +27,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
           {item?.items?.length && (
             <>
               <Separator className="bg-aqua-500" />
-              <SidebarNavItems items={item.items} pathname={pathname} />
+              <SidebarNavItems
+                items={item.items}
+                pathname={pathname}
+                onNavItemClick={onNavItemClick}
+              />
             </>
           )}
         </div>
@@ -51,9 +56,14 @@ interface SidebarNavItemsProps {
     }[];
   }[];
   pathname: string | null;
+  onNavItemClick?: () => void;
 }
 
-export function SidebarNavItems({ items, pathname }: SidebarNavItemsProps) {
+export function SidebarNavItems({
+  items,
+  pathname,
+  onNavItemClick,
+}: SidebarNavItemsProps) {
   return items?.length ? (
     <div className="grid grid-flow-row auto-rows-max font-['helvetica'] text-base">
       {items.map((item) =>
@@ -71,6 +81,7 @@ export function SidebarNavItems({ items, pathname }: SidebarNavItemsProps) {
               )}
               target={item.external ? "_blank" : ""}
               rel={item.external ? "noreferrer" : ""}
+              onClick={onNavItemClick}
             >
               {item.title}
               {item.label && (

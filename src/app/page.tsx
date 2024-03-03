@@ -30,7 +30,10 @@ export default async function Home() {
 
   return (
     <div>
-      <h1 className="mb-2 text-center text-3xl">Community Chest</h1>
+      <div className="hidden sm:flex sm:flex-col ">
+        <h1 className="mb-2 text-center text-3xl">Community Chest</h1>
+      </div>
+
       <p className="mb-2 text-center">
         Share and lend with friends without the stress
       </p>

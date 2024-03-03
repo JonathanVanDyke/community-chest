@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import Sidebar from "./_components/layout/Sidebar";
+import Sidebar from "./ui/Sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,7 +30,7 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
-          <main className="to-aqua-10 flex h-full flex-row bg-gradient-to-b from-aqua-950">
+          <main className="to-aqua-10 flex h-full flex-col bg-gradient-to-b from-aqua-950 sm:flex-row">
             <Sidebar />
             <div className="to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b from-aqua-950 p-5 text-white">
               {children}
