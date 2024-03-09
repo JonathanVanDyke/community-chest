@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "next-auth",
-      name: "Login with email",
+      name: "email",
       async authorize(credentials, req) {
         try {
           const user = await db.user.findFirst({
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
             }
           });
 
-          if (user && credentials) {
+          if (user?.password && credentials) {
             const validPassword = await bcrypt.compare(credentials?.password, user.password);
           
             if (validPassword) {
@@ -125,8 +125,8 @@ export const authOptions: NextAuthOptions = {
 
         const accessToken = await jwtHelper.createAccessToken(authUser);
         const refreshToken = await jwtHelper.createRefreshToken(authUser);
-        const accessTokenExpired = Date.now() /1000 + tokenOneDay;
-        const refreshTokenExpired = Date.now() /1000 + tokenOneWeek;
+        const accessTokenExpired = Date.now() / 1000 + tokenOneDay;
+        const refreshTokenExpired = Date.now() / 1000 + tokenOneWeek;
 
         return {
           ...token, accessToken, refreshToken, accessTokenExpired, refreshTokenExpired,
@@ -136,7 +136,7 @@ export const authOptions: NextAuthOptions = {
       } else {
         if (token){
           // In subsequent requests, check access token has expired, try to refresh it
-          if (Date.now() /1000 > token.accessTokenExpired){
+          if (Date.now() / 1000 > token.accessTokenExpired){
             const verifyToken = await jwtHelper.verifyToken(token.refreshToken);
 
             if (verifyToken){
