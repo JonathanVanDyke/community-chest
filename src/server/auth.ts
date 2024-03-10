@@ -104,8 +104,8 @@ export const authOptions: NextAuthOptions = {
       if (user){
         const authUser = {id: user.id, name: user.name, email: user.email};
 
-        const accessToken = await jwtHelper.createAccessToken(authUser as AuthUser);
-        const refreshToken = await jwtHelper.createRefreshToken(authUser as AuthUser);
+        const accessToken = await jwtHelper.createAccessToken(authUser as unknown as JWT);
+        const refreshToken = await jwtHelper.createRefreshToken(authUser as unknown as JWT);
         const accessTokenExpired = Date.now() / 1000 + tokenOneDay;
         const refreshTokenExpired = Date.now() / 1000 + tokenOneWeek;
 
@@ -134,7 +134,7 @@ export const authOptions: NextAuthOptions = {
               });
 
               if (user && token?.user){
-                const accessToken = await jwtHelper.createAccessToken(token.user as AuthUser);
+                const accessToken = await jwtHelper.createAccessToken(token.user as unknown as JWT);
                 const accessTokenExpired = Date.now() /1000 + tokenOneDay;
 
                 return {...token, accessToken, accessTokenExpired}
