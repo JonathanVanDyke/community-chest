@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -10,15 +11,18 @@ import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  type User,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { api } from "~/trpc/react";
+
 
 import bcrypt from 'bcrypt';
-import { AuthUser, jwtHelper, tokenOneDay, tokenOneWeek } from "~/utils/jwtHelper";
+import { type AuthUser, jwtHelper, tokenOneDay, tokenOneWeek } from "~/utils/jwtHelper";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -30,15 +34,9 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      email: string;
     } & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
 
 /**
@@ -47,15 +45,6 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  // callbacks: {
-  //   session: ({ session, user }) => ({
-  //     ...session,
-  //     user: {
-  //       ...session.user,
-  //       id: user.id,
-  //     },
-  //   }),
-  // },
   adapter: PrismaAdapter(db),
   session: {
     strategy: 'jwt',
@@ -64,8 +53,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "next-auth",
-      name: "email",
-      async authorize(credentials, req) {
+      name: "email or Sign up",
+      async authorize(credentials, _): Promise<User | null> {
         try {
           const user = await db.user.findFirst({
             where: {
@@ -73,7 +62,7 @@ export const authOptions: NextAuthOptions = {
             }
           });
 
-          if (user?.password && credentials) {
+          if (user?.email && user?.password && credentials) {
             const validPassword = await bcrypt.compare(credentials?.password, user.password);
           
             if (validPassword) {
@@ -81,6 +70,20 @@ export const authOptions: NextAuthOptions = {
                 id: user.id,
                 email: user.email,
               }
+            }
+          }
+
+          if (!user && credentials?.email && credentials?.password) {
+            const createUser: { id: string; password: string | null; name: string | null; email: string | null; emailVerified: Date | null; image: string | null; } = await db.user.create({
+              data: {
+                email: credentials.email,
+                password: bcrypt.hashSync(credentials.password, 10)
+              }
+            });
+
+            return {
+              id: createUser?.id ?? '',
+              email: createUser?.email ?? ''
             }
           }
         } catch (error) {

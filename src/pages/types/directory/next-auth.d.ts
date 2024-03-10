@@ -5,13 +5,15 @@ import { AuthUser } from "@/utils/jwtHelper";
 declare module "next-auth" {
   interface User {
     userId?: string,
-    name?: string
+    name?: string,
+    email?: string,
   }
 
   interface Session {
     user: {
       userId?: string,
-      name?: string 
+      name?: string,
+      email?: string,
     },
     error?: "RefreshAccessTokenError"
   }
