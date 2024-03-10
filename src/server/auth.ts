@@ -18,7 +18,6 @@ import { env } from "~/env";
 import { db } from "~/server/db";
 
 import bcrypt from 'bcrypt';
-import { AdapterUser } from "next-auth/adapters";
 import { AuthUser, jwtHelper, tokenOneDay, tokenOneWeek } from "~/utils/jwtHelper";
 
 /**
@@ -121,7 +120,7 @@ export const authOptions: NextAuthOptions = {
 
       // credentials provider:  Save the access token and refresh token in the JWT on the initial login
       if (user){
-        const authUser = {id: user.id, name: user.name} as AuthUser;
+        const authUser = {id: user.id, name: user.name, email: user.email} as AuthUser;
 
         const accessToken = await jwtHelper.createAccessToken(authUser);
         const refreshToken = await jwtHelper.createRefreshToken(authUser);
@@ -143,7 +142,12 @@ export const authOptions: NextAuthOptions = {
 
               const user = await db.user.findFirst({
                 where: {
-                  name: token.user.name
+                  OR: [
+                    {
+                      email: token.user.email,
+                      name: token.user.name
+                    }
+                  ]
                 }
               });
 
@@ -166,7 +170,8 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: any){
       if (session?.user && token){
         session.user = {
-          email: token?.user?.email,
+          name: token?.user?.name,
+          email: token?.email,
           userId: token?.user?.id
         }
       }

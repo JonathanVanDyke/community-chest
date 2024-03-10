@@ -1,9 +1,12 @@
 "use client";
 
-export default async function Home() {
+import { SignUp } from "~/app/_components/create-post";
+
+export default function Home() {
   return (
     <div>
-      \<div className="h-96">Welcome!</div>
+      <div className="h-96">hi</div>
+      <SignUp />
     </div>
   );
 }
