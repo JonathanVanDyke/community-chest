@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Sidebar from "./ui/Sidebar";
 
+import { getServerAuthSession } from "~/server/auth";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -16,11 +18,12 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/color-wood-chest.png" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerAuthSession();
   return (
     <html lang="en">
       <head>
@@ -31,7 +34,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>
           <main className="to-aqua-10 flex h-full flex-col bg-gradient-to-b from-aqua-950 sm:flex-row">
-            <Sidebar />
+            <Sidebar session={session} />
             <div className="to-aqua-10 flex min-h-screen w-full flex-col items-center justify-center overflow-scroll bg-gradient-to-b from-aqua-950 p-5 text-white">
               {children}
             </div>

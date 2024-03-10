@@ -73,7 +73,7 @@ export function SidebarNavItems({
               key={item.title}
               href={item.href}
               className={cn(
-                ` group flex h-32 w-full items-center px-2 py-1 pl-20 hover:text-white`,
+                ` group flex h-32 w-full items-center px-2 py-1 pl-20 hover:text-white sm:pl-10`,
                 item.disabled && "cursor-not-allowed opacity-60",
                 pathname === item.href
                   ? "text-foreground bg-gradient-to-b from-aqua-950 to-aqua-800  font-black text-white hover:bg-aqua-900 "

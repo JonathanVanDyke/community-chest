@@ -23,6 +23,14 @@ export default async function Home() {
   return (
     <div>
       <div className="hidden sm:flex sm:flex-col ">
+        <div className="flex justify-center">
+          <Image
+            src="/color-wood-chest.png"
+            alt="wood-chest"
+            width="200"
+            height="200"
+          />
+        </div>
         <h1 className="mb-2 text-center text-3xl">Community Chest</h1>
       </div>
 
