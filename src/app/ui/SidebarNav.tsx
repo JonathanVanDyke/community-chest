@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "../lib/utils";
 import { Separator } from "./Separator";
+import { Fragment } from "react";
 
 export interface SidebarNavProps {
   items: {
@@ -12,20 +13,25 @@ export interface SidebarNavProps {
     href?: string;
     items?: { title?: string; href: string }[];
   }[];
+  onNavItemClick?: () => void;
 }
 
-export function SidebarNav({ items }: SidebarNavProps) {
+export function SidebarNav({ items, onNavItemClick }: SidebarNavProps) {
   const pathname = usePathname();
 
   return items.length ? (
     <div className="w-full">
-      {items.map((item, index) => (
-        <div key={index} className={cn("pb-4")}>
+      {items.map((item) => (
+        <div key={item.title} className={cn("pb-4")}>
           <h4 className="mb-1 px-2 py-1 text-sm font-semibold">{item.title}</h4>
           {item?.items?.length && (
             <>
-              <Separator className="bg-aqua-500 " />
-              <SidebarNavItems items={item.items} pathname={pathname} />
+              <Separator className="bg-aqua-500" />
+              <SidebarNavItems
+                items={item.items}
+                pathname={pathname}
+                onNavItemClick={onNavItemClick}
+              />
             </>
           )}
         </div>
@@ -50,26 +56,32 @@ interface SidebarNavItemsProps {
     }[];
   }[];
   pathname: string | null;
+  onNavItemClick?: () => void;
 }
 
-export function SidebarNavItems({ items, pathname }: SidebarNavItemsProps) {
+export function SidebarNavItems({
+  items,
+  pathname,
+  onNavItemClick,
+}: SidebarNavItemsProps) {
   return items?.length ? (
     <div className="grid grid-flow-row auto-rows-max font-['helvetica'] text-base">
-      {items.map((item, index) =>
+      {items.map((item) =>
         item.href && !item.disabled ? (
-          <>
+          <Fragment key={item.title}>
             <Link
-              key={index}
+              key={item.title}
               href={item.href}
               className={cn(
-                ` group flex h-32 w-full w-full  items-center px-2 py-1 pl-20 hover:text-white`,
+                ` group flex h-32 w-full items-center px-2 py-1 pl-20 hover:text-white`,
                 item.disabled && "cursor-not-allowed opacity-60",
                 pathname === item.href
-                  ? "text-foreground from-aqua-950 to-aqua-800 hover:bg-aqua-900  bg-gradient-to-b font-black text-white "
+                  ? "text-foreground bg-gradient-to-b from-aqua-950 to-aqua-800  font-black text-white hover:bg-aqua-900 "
                   : "text-muted-foreground hover:bg-aqua-800",
               )}
               target={item.external ? "_blank" : ""}
               rel={item.external ? "noreferrer" : ""}
+              onClick={onNavItemClick}
             >
               {item.title}
               {item.label && (
@@ -79,10 +91,10 @@ export function SidebarNavItems({ items, pathname }: SidebarNavItemsProps) {
               )}
             </Link>
             <Separator className="bg-aqua-500 " />
-          </>
+          </Fragment>
         ) : (
           <span
-            key={index}
+            key={item.title}
             className={cn(
               "text-muted-foreground flex w-full cursor-not-allowed items-center  p-2 hover:underline",
               item.disabled && "cursor-not-allowed opacity-60",
