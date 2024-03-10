@@ -1,4 +1,4 @@
-import { encode, decode, JWT } from "next-auth/jwt";
+import { encode, decode, type JWT } from "next-auth/jwt";
 import { env } from "~/env";
 import { type User } from "@prisma/client";
 
