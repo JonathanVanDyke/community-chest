@@ -8,13 +8,15 @@ import {
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ email: z.string().min(1), password: z.string().min(1) }))
+    .input(z.object({ email: z.string().min(1).email(), password: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
 
       const encryptedPassword = bcrypt.hashSync(input.password, 10)
+      const lowerCaseEmail = input.email.toLowerCase()
+      
       return ctx.db.user.create({
         data: {
-          email: input.email,
+          email: lowerCaseEmail,
           password: encryptedPassword,
         },
       });

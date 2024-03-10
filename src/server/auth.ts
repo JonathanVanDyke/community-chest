@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
           if (!user && credentials?.email && credentials?.password) {
             const createUser: { id: string; password: string | null; name: string | null; email: string | null; emailVerified: Date | null; image: string | null; } = await db.user.create({
               data: {
-                email: credentials.email,
+                email: credentials.email.toLowerCase(),
                 password: bcrypt.hashSync(credentials.password, 10)
               }
             });
