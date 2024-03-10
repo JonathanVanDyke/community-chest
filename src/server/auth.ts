@@ -154,7 +154,7 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           name: token?.user.name,
           email: token.email,
-          userId: token.user.id
+          id: token.user.id
         }
       }
       session.error = token.error;

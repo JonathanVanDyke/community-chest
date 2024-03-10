@@ -2,6 +2,7 @@ import { type AuthUser } from "@/utils/jwtHelper";
 
 declare module "next-auth" {
   interface User {
+    id: string,
     userId?: string,
     name?: string,
     email?: string,
@@ -9,6 +10,7 @@ declare module "next-auth" {
 
   interface Session extends DefaultSession {
     user: {
+      id: string,
       userId?: string,
       name?: string,
       email?: string,
