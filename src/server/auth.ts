@@ -1,43 +1,22 @@
-/* eslint-disable @typescript-eslint/dot-notation */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import {
   getServerSession,
-  type DefaultSession,
   type NextAuthOptions,
   type User,
+  type Session,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { env } from "~/env";
 import { db } from "~/server/db";
-import { api } from "~/trpc/react";
-
 
 import bcrypt from 'bcrypt';
 import { type AuthUser, jwtHelper, tokenOneDay, tokenOneWeek } from "~/utils/jwtHelper";
+import { type JWT } from "next-auth/jwt";
+import { type UserAuth } from "~/pages/types/directory/next-auth";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      id: string;
-      email: string;
-    } & DefaultSession["user"];
-  }
-}
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -119,20 +98,20 @@ export const authOptions: NextAuthOptions = {
      */
   ],
   callbacks: {
-    async jwt({token, user, profile, account, isNewUser}: any){
+    async jwt({token, user}): Promise<JWT & { user: UserAuth | AuthUser}> {
 
       // credentials provider:  Save the access token and refresh token in the JWT on the initial login
       if (user){
-        const authUser = {id: user.id, name: user.name, email: user.email} as AuthUser;
+        const authUser = {id: user.id, name: user.name, email: user.email};
 
-        const accessToken = await jwtHelper.createAccessToken(authUser);
-        const refreshToken = await jwtHelper.createRefreshToken(authUser);
+        const accessToken = await jwtHelper.createAccessToken(authUser as AuthUser);
+        const refreshToken = await jwtHelper.createRefreshToken(authUser as AuthUser);
         const accessTokenExpired = Date.now() / 1000 + tokenOneDay;
         const refreshTokenExpired = Date.now() / 1000 + tokenOneWeek;
 
         return {
           ...token, accessToken, refreshToken, accessTokenExpired, refreshTokenExpired,
-          user: authUser
+          user: authUser as UserAuth | (UserAuth & AuthUser)
         }
 
       } else {
@@ -154,8 +133,8 @@ export const authOptions: NextAuthOptions = {
                 }
               });
 
-              if (user){
-                const accessToken = await jwtHelper.createAccessToken(token.user);
+              if (user && token?.user){
+                const accessToken = await jwtHelper.createAccessToken(token.user as AuthUser);
                 const accessTokenExpired = Date.now() /1000 + tokenOneDay;
 
                 return {...token, accessToken, accessTokenExpired}
@@ -170,12 +149,12 @@ export const authOptions: NextAuthOptions = {
       return token
     },
 
-    async session({ session, token }: any){
-      if (session?.user && token){
+    async session({ session, token }: {session: Session, token: JWT}) {
+      if (session?.user && token?.email && token?.user){
         session.user = {
-          name: token?.user?.name,
-          email: token?.email,
-          userId: token?.user?.id
+          name: token?.user.name,
+          email: token.email,
+          userId: token.user.id
         }
       }
       session.error = token.error;
