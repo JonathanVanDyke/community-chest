@@ -1,15 +1,7 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
-import { CreatePost } from "~/app/_components/create-post";
-import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
 import Search from "./ui/Search";
 
 export default async function Home() {
-  noStore();
-  const hello = await api.post.hello.query({ text: "from tRPC" });
-  const session = await getServerAuthSession();
-
   const cards = [
     {
       title: "Filament Finder",
@@ -31,6 +23,14 @@ export default async function Home() {
   return (
     <div>
       <div className="hidden sm:flex sm:flex-col ">
+        <div className="flex justify-center">
+          <Image
+            src="/color-wood-chest.png"
+            alt="wood-chest"
+            width="200"
+            height="200"
+          />
+        </div>
         <h1 className="mb-2 text-center text-3xl">Community Chest</h1>
       </div>
 
@@ -58,25 +58,6 @@ export default async function Home() {
           </a>
         ))}
       </div>
-    </div>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  const latestPost = await api.post.getLatest.query();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
     </div>
   );
 }
